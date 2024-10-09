@@ -24,11 +24,25 @@ const receitas = [
 ];
 
 app.get("/receitas", (req, res) => {
+    const { ingredientes } = req.query;
+
+    if (ingredientes) {
+        const receitasFiltradas = receitas.filter(
+            receita => receita.ingredientes.toLowerCase().includes(ingredientes.toLowerCase())
+        );
+
+        return res.send(receitasFiltradas);
+    }
+
     res.send(receitas);
 });
 
 app.get("/receitas/:id", (req, res) => {
     const { id } = req.params;
+    const { auth } = req.headers;
+
+    if (auth != "Luiz") return res.sendStatus(401); // Exemplo de header
+
     const receita = receitas.find((item) => item.id === Number(id));
     res.send(receita);
 });
