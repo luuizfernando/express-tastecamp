@@ -33,14 +33,14 @@ app.get("/receitas/:id", (req, res) => {
     res.send(receita);
 });
 
-    app.post("/receitas", (req, res) => {
-        const { titulo, ingredientes, preparo } = req.body;
+app.post("/receitas", (req, res) => {
+    const { titulo, ingredientes, preparo } = req.body;
 
-        if (!titulo || !ingredientes || !preparo) return res.status(422).send("Todos os campos são obrigatórios!!");
+    if (!titulo || !ingredientes || !preparo) return res.status(422).send("Todos os campos são obrigatórios!!");
 
-        const novaReceita = { id: receitas.length + 1, titulo: titulo, ingredientes: ingredientes, preparo: preparo };
-        receitas.push(novaReceita);
-        res.sendStatus(201);
-    });
+    const novaReceita = { id: receitas.length + 1, titulo: titulo, ingredientes: ingredientes, preparo: preparo };
+    receitas.push(novaReceita);
+    res.sendStatus(201);
+});
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}.`));
