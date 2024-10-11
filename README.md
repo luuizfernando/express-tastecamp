@@ -12,10 +12,10 @@ This is a simple **Recipe API** built with **Express** and **Node.js**. The API 
 
 ## 🛠️ Technologies Used
 
-- **Node.js** - JavaScript runtime environment.
-- **Express** - Minimal and flexible Node.js web framework.
-- **CORS** - Middleware to enable Cross-Origin Resource Sharing.
 - **JavaScript (ES6+)** - Modern JavaScript features.
+- **Express** - Minimal and flexible Node.js web framework.
+- **Node.js** - JavaScript runtime environment.
+- **CORS** - Middleware to enable Cross-Origin Resource Sharing.
 
 ---
 
