@@ -67,13 +67,13 @@ If you want to run the project locally, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/recipe-api.git
+    git clone https://github.com/your-username/express-tastecamp.git
     ```
 
 2. Install the dependencies:
 
     ```bash
-    cd recipe-api
+    cd express-tastecamp
     npm install
     ```
 
