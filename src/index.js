@@ -38,7 +38,10 @@ app.get("/receitas/:id", (req, res) => {
     const { id } = req.params;
 
     db.collection("receitas").findOne({ _id: new ObjectId(id) })
-        .then((receita) => res.send(receita))
+        .then((receita) => {
+            if (!receita) return res.status(404).send("Receita não existe");
+            res.send(receita);
+        })
         .catch((err => res.status(500).send(err.message)));
 });
 
