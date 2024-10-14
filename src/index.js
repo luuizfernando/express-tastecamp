@@ -68,4 +68,49 @@ app.delete("/receitas/:id", async (req, res) => {
     }
 });
 
+app.put("/receitas/:id", async (req, res) => {
+    const { id } = req.params;
+    const { titulo, preparo, ingredientes } = req.body;
+
+    const receitaEditada = {};
+    if (titulo) receitaEditada.titulo = titulo;
+    if (preparo) receitaEditada.preparo = preparo;
+    if (ingredientes) receitaEditada.ingredientes = ingredientes;
+
+    try {
+        const result = await db.collection("receitas").updateOne(
+            { _id: new ObjectId(id) },
+            { $set: receitaEditada }
+        );
+
+        if (result.matchedCount === 0) return res.status(404).send("Este item não existe");
+        res.send("Receita atualizada");
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+app.put("/receitas/muitas/:filtroIngredientes", async (req, res) => {
+    const { filtroIngredientes } = req.params;
+    const { titulo, preparo, ingredientes } = req.body;
+
+    const receitasEditadas = {};
+    if (titulo) receitasEditadas.titulo = titulo;
+    if (preparo) receitasEditadas.preparo = preparo;
+    if (ingredientes) receitasEditadas.ingredientes = ingredientes;
+
+    try {
+        const result = await db.collection("receitas").updateMany(
+            { ingredientes: { $regex: filtroIngredientes, $options: "i" } },
+            { $set: receitasEditadas }
+        );
+
+        if (result.matchedCount === 0) return res.status(404).send("Não existe nenhuma receita com esse filtro.");
+        res.send("receitasEditadas");
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
 app.listen(process.env.PORT, () => console.log(`Servidor rodando na porta ${process.env.PORT}.`));
