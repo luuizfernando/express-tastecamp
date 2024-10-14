@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 
 const app = express();
@@ -14,24 +14,6 @@ const mongoClient = new MongoClient(process.env.DATABASE_URL);
 mongoClient.connect()
     .then(() => db = mongoClient.db())
     .catch((err) => console.log(err.message));
-
-const PORT = 4000;
-
-const receitas = [
-    {
-        id: 1,
-        titulo: "Pão com Ovo",
-        ingredientes: "Pão e Ovo",
-        preparo: "Frite o ovo e coloque no pão",
-    },
-    {
-        id: 2,
-        titulo: "Mingau de Whey",
-        ingredientes: "Leite, Aveia e Whey",
-        preparo: "Misture tudo na panela fervendo",
-    }
-];
-
 
 
 app.get("/receitas", (req, res) => {
@@ -48,30 +30,28 @@ app.get("/receitas", (req, res) => {
     db.collection("receitas").find().toArray()
         .then(receitas => res.send(receitas))
         .catch(err => res.status(500).send(err.message));
-
-    res.send(receitas);
 });
 
 app.get("/receitas/:id", (req, res) => {
+    // const { auth } = req.headers;
+    // if (auth != "Luiz") return res.sendStatus(401);
     const { id } = req.params;
-    const { auth } = req.headers;
 
-    if (auth != "Luiz") return res.sendStatus(401); // Exemplo de header
-
-    const receita = receitas.find((item) => item.id === Number(id));
-    res.send(receita);
+    db.collection("receitas").findOne({ _id: new ObjectId(id) })
+        .then((receita) => res.send(receita))
+        .catch((err => res.status(500).send(err.message)));
 });
 
 app.post("/receitas", (req, res) => {
     const { titulo, ingredientes, preparo } = req.body;
 
-    if (!titulo || !ingredientes || !preparo) return res.status(422).send("Todos os campos são obrigatórios!!");
+    if (!titulo || !ingredientes || !preparo) return res.status(422).send("Todos os campos são obrigatórios!");
 
-    const novaReceita = { titulo: titulo, ingredientes: ingredientes, preparo: preparo };
-    
+    const novaReceita = { titulo, ingredientes, preparo };
+
     db.collection("receitas").insertOne(novaReceita)
         .then(() => res.sendStatus(201))
         .catch(err => res.status(500).send(err.message));
 });
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}.`));
+app.listen(process.env.PORT, () => console.log(`Servidor rodando na porta ${process.env.PORT}.`));
