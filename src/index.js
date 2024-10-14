@@ -9,52 +9,63 @@ app.use(cors());
 app.use(express.json());
 dotenv.config();
 
-let db;
 const mongoClient = new MongoClient(process.env.DATABASE_URL);
-mongoClient.connect()
-    .then(() => db = mongoClient.db())
-    .catch((err) => console.log(err.message));
+try {
+    await mongoClient.connect();
+    console.log("MongoDB conectado!");
+} catch (err) {
+    console.log(err.message);
+}
+const db = mongoClient.db();
 
-
-app.get("/receitas", (req, res) => {
-    // const { ingredientes } = req.query;
-
-    // if (ingredientes) {
-    //     const receitasFiltradas = receitas.filter(
-    //         receita => receita.ingredientes.toLowerCase().includes(ingredientes.toLowerCase())
-    //     );
-
-    //     return res.send(receitasFiltradas);
-    // }
-
-    db.collection("receitas").find().toArray()
-        .then(receitas => res.send(receitas))
-        .catch(err => res.status(500).send(err.message));
+app.get("/receitas", async (req, res) => {
+    try {
+        const receitas = await db.collection("receitas").find().toArray();
+        res.send(receitas);
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
 });
 
-app.get("/receitas/:id", (req, res) => {
-    // const { auth } = req.headers;
-    // if (auth != "Luiz") return res.sendStatus(401);
+app.get("/receitas/:id", async (req, res) => {
     const { id } = req.params;
-
-    db.collection("receitas").findOne({ _id: new ObjectId(id) })
-        .then((receita) => {
-            if (!receita) return res.status(404).send("Receita não existe");
-            res.send(receita);
-        })
-        .catch((err => res.status(500).send(err.message)));
+    try {
+        const receita = await db.collection("receitas").findOne({ _id: new ObjectId(id) })
+        if (!receita) return res.status(404).send("Receita não existe");
+        res.send(receita);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 });
 
-app.post("/receitas", (req, res) => {
+app.post("/receitas", async (req, res) => {
     const { titulo, ingredientes, preparo } = req.body;
 
     if (!titulo || !ingredientes || !preparo) return res.status(422).send("Todos os campos são obrigatórios!");
 
     const novaReceita = { titulo, ingredientes, preparo };
 
-    db.collection("receitas").insertOne(novaReceita)
-        .then(() => res.sendStatus(201))
-        .catch(err => res.status(500).send(err.message));
+    try {
+        const recipe = await db.collection("receitas").findOne({ titulo: titulo });
+        if (recipe) return res.status(409).send("Essa receita já existe.");
+
+        await db.collection("receitas").insertOne(novaReceita);
+        res.sendStatus(201);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+app.delete("/receitas/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await db.collection("receitas").deleteOne({ _id: new ObjectId(id) });
+        if (result.deletedCount === 0) return res.status(404).status("Esse item não existe");
+        res.send("Item deletado com sucesso!");
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 });
 
 app.listen(process.env.PORT, () => console.log(`Servidor rodando na porta ${process.env.PORT}.`));
