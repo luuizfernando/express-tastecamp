@@ -97,6 +97,6 @@ The server will be available at `http://localhost:4000`.
 
 ## 👤 Developer
 
-Developed by [Your Name](https://github.com/luuizfernando). Feel free to reach out and contribute to the project!
+Developed by [Luiz Fernando](https://github.com/luuizfernando). Feel free to reach out and contribute to the project!
 
 ---
