@@ -40,7 +40,7 @@ app.get("/receitas/:id", async (req, res) => {
 });
 
 app.post("/receitas", async (req, res) => {
-    const { titulo, ingredientes, preparo } = req.body;
+    const { titulo } = req.body;
 
     const receitaSchema = joi.object({
         titulo: joi.string().required(),
