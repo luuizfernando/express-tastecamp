@@ -89,7 +89,6 @@ The server will be available at `http://localhost:4000`.
 
 ## 📝 Future Improvements
 
-- Implement route to delete or update recipes.
 - Add authentication for other endpoints.
 - Add more advanced filtering options.
 
