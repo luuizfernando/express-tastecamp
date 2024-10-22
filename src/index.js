@@ -189,8 +189,8 @@ app.post("/sign-in", async (req, res) => {
 
         const token = uuid();
         await db.collection("sessoes").insertOne({ token, idUsuario: usuario._id });
-        req.send(token);
-        // res.sendStatus(200);
+        // req.send(token);
+        res.sendStatus(200);
     } catch (err) {
         res.status(500).send(err.message);
     }
