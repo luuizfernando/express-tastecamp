@@ -7,6 +7,11 @@ This is a simple **Recipe API** built with **Express** and **Node.js**. The API 
 - **GET** `/receitas`: Retrieve all recipes or filter them by ingredients.
 - **GET** `/receitas/:id`: Retrieve a recipe by its ID (requires authorization).
 - **POST** `/receitas`: Add a new recipe.
+- **DELETE** `/receitas/:id`: Delete a recipe by its ID
+- **PUT** `/receitas/:id`: Update a recipe by its ID
+- **PUT** `/receitas/muitas/:filtroIngredientes`: Update multiples recipes by its ID
+- **POST** `/sign-up`
+- **POST** `/sign-in`
 
 ---
 
@@ -89,7 +94,6 @@ The server will be available at `http://localhost:4000`.
 
 ## 📝 Future Improvements
 
-- Add authentication for other endpoints.
 - Add more advanced filtering options.
 
 ---
