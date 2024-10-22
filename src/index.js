@@ -2,7 +2,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import joi from 'joi';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 import { createReceita, deleteReceita, editMuitasReceitas, editReceita, getReceita, getReceitaById } from './controllers/recipesController.js';
 import { signIn, signUp } from './controllers/userController.js';
 
