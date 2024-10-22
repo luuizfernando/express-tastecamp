@@ -120,7 +120,7 @@ app.put("/receitas/:id", async (req, res) => {
 
         const receita = await db.collection("receitas").findOne({ _id: new ObjectId(id) });
         if (!receita) return res.sendStatus(404);
-        if (receita.idUsuario !== sessao.idUsuario) return res.sendStatus(401);
+        if (!receita.idUsuario.equals(sessao.idUsuario)) return res.sendStatus(401);
 
         await db.collection("receitas").updateOne(
             { _id: new ObjectId(id) },
