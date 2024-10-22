@@ -89,7 +89,6 @@ The server will be available at `http://localhost:4000`.
 
 ## 📝 Future Improvements
 
-- Implement route to delete or update recipes.
 - Add authentication for other endpoints.
 - Add more advanced filtering options.
 
@@ -100,3 +99,8 @@ The server will be available at `http://localhost:4000`.
 Developed by [Luiz Fernando](https://github.com/luuizfernando). Feel free to reach out and contribute to the project!
 
 ---
+
+## 📫 Contato
+
+- **Email:** [luizfernandosant26@gmail.com](mailto:luizfernandosant26@gmail.com)
+- **LinkedIn:** [linkedin.com/in/luiz-fernando-dalpra](https://linkedin.com/in/luiz-fernando-dalpra)
