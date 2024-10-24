@@ -1,5 +1,6 @@
-import { db } from '../index.js';
+import { db } from '../database/database.connection.js';
 import { ObjectId } from 'mongodb';
+import { receitaSchema } from '../schemas/recipes.schema.js';
 
 export async function getReceita(req, res) {
     try {
@@ -28,12 +29,6 @@ export async function createReceita(req, res) {
     const token = authorization?.replace("Bearer ", "");
 
     if (!token) return res.sendStatus(401);
-
-    const receitaSchema = joi.object({
-        titulo: joi.string().required(),
-        ingredientes: joi.string().required(),
-        preparo: joi.string().required()
-    });
 
     const validation = receitaSchema.validate(req.body, { abortEarly: false });
 

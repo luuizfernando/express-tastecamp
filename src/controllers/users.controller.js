@@ -1,6 +1,7 @@
-import { db, usuarioSchema } from '../index.js';
+import { db } from '../database/database.connection.js';
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
+import { usuarioSchema } from '../schemas/users.schema.js'
 
 export async function signUp(req, res) {
     const { nome, email, senha } = req.body;
@@ -36,7 +37,7 @@ export async function signIn(req, res) {
 
         const token = uuid();
         await db.collection("sessoes").insertOne({ token, idUsuario: usuario._id });
-        // req.send(token);
+        // res.send(token);
         res.sendStatus(200);
     } catch (err) {
         res.status(500).send(err.message);
