@@ -23,9 +23,13 @@ export async function getReceitaById(req, res) {
 };
 
 export async function createReceita(req, res) {
+    const { titulo } = req.body;
+    
     try {
         const recipe = await db.collection("receitas").findOne({ titulo: titulo });
         if (recipe) return res.status(409).send("Essa receita já existe.");
+
+        const sessao = res.locals.sessao;
 
         await db.collection("receitas").insertOne({ ...req.body, idUsuario: sessao.idUsuario });
         res.sendStatus(201);
